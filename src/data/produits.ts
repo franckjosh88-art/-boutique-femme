@@ -1,3 +1,1 @@
-src
- └─ data
-     └─ produits.ts
+export {}

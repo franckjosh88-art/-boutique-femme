@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ayana — Huile naturelle pour le visage, le corps et les cheveux</title>
+  <meta name="description" content="Ayana, une huile naturelle multi-usages pour le visage, le corps et les cheveux. Une texture légère et un parfum délicat pour le rituel de soin du quotidien." />
+
+  <!-- Polices -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind par CDN (aucun outil à installer) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            foret: { DEFAULT: '#1e3a2b', 800: '#17301f', 900: '#12261a' },
+            sauge: { light: '#dfe6d5', DEFAULT: '#93a37c', dark: '#6f7f58' },
+            miel:  { light: '#ecd08a', DEFAULT: '#c8912c', dark: '#9f6d15' },
+            creme: { DEFAULT: '#f7f4ec', 50: '#fbfaf5', 100: '#f1ecdf' },
+          },
+          fontFamily: {
+            display: ['Fraunces', 'ui-serif', 'Georgia', 'serif'],
+            sans: ['Manrope', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          },
+          keyframes: {
+            goutte: {
+              '0%, 100%': { transform: 'translateY(-4px)', opacity: '.55' },
+              '50%': { transform: 'translateY(6px)', opacity: '1' },
+            },
+          },
+          animation: {
+            goutte: 'goutte 3.6s ease-in-out infinite',
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    html { -webkit-text-size-adjust: 100%; }
+    body { font-family: 'Manrope', system-ui, sans-serif; overflow-x: hidden; }
+    /* Focus visible au clavier, partout */
+    :focus-visible { outline: 2px solid #c99a2e; outline-offset: 2px; border-radius: 8px; }
+    /* Fond doux derrière les images (si fichier absent) */
+    .img-frame { background: linear-gradient(180deg, #f1ecdf 0%, #dfe6d5 100%); }
+
+    /* Animations des images */
+    @keyframes kenburns {
+      from { transform: scale(1); }
+      to { transform: scale(1.08); }
+    }
+    .kenburns { animation: kenburns 22s ease-in-out infinite alternate; }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .8s ease, transform .8s cubic-bezier(.22, 1, .36, 1);
+      will-change: opacity, transform;
+    }
+    .reveal.is-visible { opacity: 1; transform: none; }
+
+    /* Accessibilité : on coupe toute animation si l'utilisateur le demande */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+        scroll-behavior: auto !important;
+      }
+      .animate-goutte, .kenburns { animation: none !important; }
+      .reveal { opacity: 1 !important; transform: none !important; }
+    }
+  </style>
+</head>
+
+<body class="bg-creme text-foret-900 antialiased">
+  <!-- Espace pour la barre fixe mobile en bas -->
+  <div class="pb-24 sm:pb-0">
+
+    <!-- ============ HERO PLEIN ÉCRAN ============ -->
+    <section id="accueil" class="px-3 py-3 sm:px-6 sm:py-6 lg:px-10 lg:py-8">
+      <div class="group relative mx-auto max-w-[1200px] overflow-hidden rounded-[1.75rem] sm:rounded-[2rem]">
+        <!-- Image de fond (première image : pas de lazy) -->
+        <div class="img-frame absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-105">
+          <img
+            src="images/hero-femme.jpg"
+            alt="Femme appliquant une huile naturelle sur sa peau"
+            width="1600" height="1100"
+            fetchpriority="high"
+            class="kenburns size-full object-cover object-center"
+            onerror="this.style.display='none'" />
+        </div>
+        <!-- Dégradés pour garder le texte lisible -->
+        <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" aria-hidden="true"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-black/20" aria-hidden="true"></div>
+
+        <div class="relative z-10 flex min-h-[92svh] flex-col p-5 pb-8 sm:min-h-[82vh] sm:p-8">
+          <!-- Menu transparent -->
+          <nav class="flex items-center justify-between gap-3 text-white">
+            <a href="#accueil" class="flex items-center gap-2">
+              <span class="grid h-9 w-9 place-items-center rounded-full border border-white/40 bg-white/10 text-sm font-semibold text-white backdrop-blur">A</span>
+              <span class="font-display text-xl tracking-tight text-white">Ayana<span class="text-miel-light">.</span></span>
+            </a>
+            <div class="hidden items-center gap-6 text-sm text-white/85 md:flex">
+              <a class="transition duration-200 hover:text-white" href="#bienfaits">Bienfaits</a>
+              <a class="transition duration-200 hover:text-white" href="#utilisation">Comment l'utiliser</a>
+              <a class="transition duration-200 hover:text-white" href="#avis">Avis</a>
+              <a class="transition duration-200 hover:text-white" href="#faq">Questions</a>
+            </div>
+            <a data-wa href="#commander" target="_blank" rel="noopener"
+               class="inline-flex min-h-[44px] items-center justify-center rounded-full bg-white px-5 text-sm font-semibold text-foret transition duration-200 hover:bg-white/90">
+              Commander
+            </a>
+          </nav>
+
+          <div class="mt-4 h-px w-full bg-white/25" aria-hidden="true"></div>
+
+          <div class="mt-8 grid flex-1 grid-cols-1 gap-8 pt-4 sm:pt-8 lg:grid-cols-2">
+            <!-- Colonne gauche -->
+            <div class="flex flex-col">
+              <span class="inline-flex w-fit items-center gap-2 rounded-full border border-white/40 bg-white/10 px-3.5 py-2 text-xs font-medium text-white backdrop-blur">
+                <span class="h-2 w-2 rounded-full bg-miel-light"></span> Huile 100 % naturelle
+              </span>
+              <h1 class="mt-6 font-display text-[40px] font-normal leading-[1.03] tracking-[-0.02em] text-white sm:text-6xl lg:text-7xl">
+                Quelques gouttes,<br />une peau qui<br />rayonne.
+              </h1>
+              <!-- Seule animation du site : la goutte -->
+              <span aria-hidden="true"
+                    class="animate-goutte mt-7 h-6 w-6 rounded-full rounded-bl-none bg-gradient-to-br from-miel-light to-miel shadow-md"></span>
+              <div class="mt-7">
+                <a data-wa href="#commander" target="_blank" rel="noopener"
+                   class="inline-flex min-h-[52px] items-center justify-center rounded-full bg-white px-7 text-base font-semibold text-foret transition duration-200 hover:bg-white/90">
+                  Commander mon flacon
+                </a>
+              </div>
+            </div>
+
+            <!-- Colonne droite -->
+            <div class="flex flex-col gap-8 lg:justify-between">
+              <!-- Atouts (haut droite) -->
+              <ul class="w-full text-white lg:max-w-xs lg:self-end">
+                <li class="flex items-center gap-3 border-b border-white/20 py-3">
+                  <span class="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/30 bg-white/10 backdrop-blur">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11Z" /></svg>
+                  </span>
+                  <span class="text-sm font-medium">Sans parfum ajouté</span>
+                </li>
+                <li class="flex items-center gap-3 border-b border-white/20 py-3">
+                  <span class="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/30 bg-white/10 backdrop-blur">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 4C11 4 5 8 5 15c0 2 1 4 2 5 1-6 5-9 11-10-5 3-8 6-9 11 7 0 11-6 11-15Z" /></svg>
+                  </span>
+                  <span class="text-sm font-medium">Ingrédients naturels</span>
+                </li>
+                <li class="flex items-center gap-3 py-3">
+                  <span class="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/30 bg-white/10 backdrop-blur">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="3" /><path d="M16 12h3" /></svg>
+                  </span>
+                  <span class="text-sm font-medium">Paiement à la livraison</span>
+                </li>
+              </ul>
+
+              <!-- Carte produit (bas droite) -->
+              <div class="group w-full rounded-3xl bg-white p-5 shadow-xl shadow-black/10 sm:max-w-[320px] lg:self-end">
+                <div class="flex h-40 items-center justify-center overflow-hidden rounded-2xl bg-creme-100">
+                  <img
+                    src="images/flacon.png"
+                    alt="Flacon d'huile naturelle Ayana de 30 ml"
+                    width="400" height="600" loading="lazy"
+                    class="size-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    onerror="this.parentElement.style.display='none'" />
+                </div>
+                <div class="mt-4 h-px w-full bg-creme-100" aria-hidden="true"></div>
+                <div class="mt-4 flex items-center justify-between gap-3">
+                  <span class="text-sm font-medium text-foret">Flacon de 30 ml</span>
+                  <span class="whitespace-nowrap text-sm font-semibold text-miel-dark">12 000 FCFA</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BANDEAU DE CONFIANCE ============ -->
+    <section class="border-y border-sauge-light/60 bg-creme-50">
+      <div class="mx-auto grid max-w-6xl grid-cols-2 gap-4 px-4 py-6 text-center sm:px-6 md:grid-cols-4">
+        <div class="rounded-2xl bg-creme px-3 py-4">
+          <p class="font-display text-lg text-foret">100% naturel</p>
+          <p class="mt-1 text-xs text-foret-800/70">Une composition simple</p>
+        </div>
+        <div class="rounded-2xl bg-creme px-3 py-4">
+          <p class="font-display text-lg text-foret">Multi-usages</p>
+          <p class="mt-1 text-xs text-foret-800/70">Visage, corps, cheveux</p>
+        </div>
+        <div class="rounded-2xl bg-creme px-3 py-4">
+          <p class="font-display text-lg text-foret">Texture légère</p>
+          <p class="mt-1 text-xs text-foret-800/70">Pénètre sans effet gras</p>
+        </div>
+        <div class="rounded-2xl bg-creme px-3 py-4">
+          <p class="font-display text-lg text-foret">100 ml</p>
+          <p class="mt-1 text-xs text-foret-800/70">Format pratique</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ À PROPOS ============ -->
+    <section class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:py-20">
+      <div class="mx-auto max-w-2xl text-center">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-miel-dark">Notre huile</p>
+        <h2 class="mt-3 font-display text-3xl text-foret sm:text-4xl">Une composition naturelle et généreuse</h2>
+        <p class="mt-4 text-base leading-7 text-foret-800/90">
+          Ayana réunit des huiles végétales choisies pour leur douceur et leur toucher agréable au quotidien.
+          Une formule courte, pensée pour accompagner votre rituel de soin, matin et soir.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ BIENFAITS ============ -->
+    <section id="bienfaits" class="bg-creme-50 py-16 lg:py-24">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6">
+        <div class="mx-auto max-w-2xl text-center">
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-miel-dark">Bienfaits</p>
+          <h2 class="mt-3 font-display text-3xl text-foret sm:text-4xl">Un soin, trois gestes</h2>
+        </div>
+
+        <div class="mt-14 space-y-16 lg:space-y-24">
+          <!-- Visage -->
+          <article class="grid items-center gap-8 lg:grid-cols-2 lg:gap-14">
+            <div class="group img-frame reveal overflow-hidden rounded-3xl shadow-lg shadow-foret/10">
+              <img src="images/femme-visage.jpg"
+                   alt="Femme appliquant délicatement l'huile naturelle sur son visage"
+                   width="800" height="800" loading="lazy"
+                   class="h-72 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 sm:h-80 lg:h-96"
+                   onerror="this.style.display='none'" />
+            </div>
+            <div>
+              <span class="font-display text-4xl text-miel">01</span>
+              <h3 class="mt-2 font-display text-2xl text-foret sm:text-3xl">Pour le visage</h3>
+              <p class="mt-4 text-base leading-7 text-foret-800/90">
+                Une touche d'huile suffit pour un moment de douceur. Sa texture légère s'étale facilement et laisse un fini confortable, sans effet collant. Idéale le matin et le soir, seule ou après votre crème habituelle.
+              </p>
+            </div>
+          </article>
+
+          <!-- Corps -->
+          <article class="grid items-center gap-8 lg:grid-cols-2 lg:gap-14">
+            <div class="order-last lg:order-first">
+              <span class="font-display text-4xl text-miel">02</span>
+              <h3 class="mt-2 font-display text-2xl text-foret sm:text-3xl">Pour le corps</h3>
+              <p class="mt-4 text-base leading-7 text-foret-800/90">
+                Après la douche, massez quelques gouttes sur les zones que vous souhaitez choyer. Une texture qui pénètre rapidement, pour prolonger la sensation de confort sur tout le corps.
+              </p>
+            </div>
+            <div class="group img-frame reveal overflow-hidden rounded-3xl shadow-lg shadow-foret/10">
+              <img src="images/femme-corps.jpg"
+                   alt="Femme appliquant l'huile naturelle sur ses bras après la douche"
+                   width="800" height="800" loading="lazy"
+                   class="h-72 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 sm:h-80 lg:h-96"
+                   onerror="this.style.display='none'" />
+            </div>
+          </article>
+
+          <!-- Cheveux -->
+          <article class="grid items-center gap-8 lg:grid-cols-2 lg:gap-14">
+            <div class="group img-frame reveal overflow-hidden rounded-3xl shadow-lg shadow-foret/10">
+              <img src="images/femme-cheveux.jpg"
+                   alt="Femme aux cheveux brillants passant l'huile naturelle sur ses longueurs"
+                   width="800" height="800" loading="lazy"
+                   class="h-72 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 sm:h-80 lg:h-96"
+                   onerror="this.style.display='none'" />
+            </div>
+            <div>
+              <span class="font-display text-4xl text-miel">03</span>
+              <h3 class="mt-2 font-display text-2xl text-foret sm:text-3xl">Pour les cheveux</h3>
+              <p class="mt-4 text-base leading-7 text-foret-800/90">
+                Sur les longueurs et les pointes, quelques gouttes facilitent le coiffage et apportent une touche de souplesse. À utiliser sur cheveux humides ou secs, selon votre habitude.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ COMMENT L'UTILISER ============ -->
+    <section id="utilisation" class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:py-24">
+      <div class="mx-auto max-w-2xl text-center">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-miel-dark">Mode d'emploi</p>
+        <h2 class="mt-3 font-display text-3xl text-foret sm:text-4xl">Comment l'utiliser</h2>
+      </div>
+      <div class="mt-12 grid gap-6 sm:grid-cols-3">
+        <div class="rounded-3xl border border-sauge-light bg-creme-50 p-6">
+          <span class="grid h-10 w-10 place-items-center rounded-full bg-sauge-light font-display text-lg text-foret">1</span>
+          <h3 class="mt-4 font-display text-xl text-foret">Préparez</h3>
+          <p class="mt-2 text-sm leading-6 text-foret-800/90">Sur peau propre et légèrement humide, versez quelques gouttes dans le creux de la main.</p>
+        </div>
+        <div class="rounded-3xl border border-sauge-light bg-creme-50 p-6">
+          <span class="grid h-10 w-10 place-items-center rounded-full bg-sauge-light font-display text-lg text-foret">2</span>
+          <h3 class="mt-4 font-display text-xl text-foret">Appliquez</h3>
+          <p class="mt-2 text-sm leading-6 text-foret-800/90">Massez en mouvements circulaires sur le visage, le corps ou les cheveux, jusqu'à absorption.</p>
+        </div>
+        <div class="rounded-3xl border border-sauge-light bg-creme-50 p-6">
+          <span class="grid h-10 w-10 place-items-center rounded-full bg-sauge-light font-display text-lg text-foret">3</span>
+          <h3 class="mt-4 font-display text-xl text-foret">Répétez</h3>
+          <p class="mt-2 text-sm leading-6 text-foret-800/90">À utiliser une à deux fois par jour selon vos envies et votre routine de soin.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ AVIS ============ -->
+    <section id="avis" class="bg-foret py-16 text-creme-50 lg:py-24">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6">
+        <div class="mx-auto max-w-2xl text-center">
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-miel-light">Elles l'ont essayée</p>
+          <h2 class="mt-3 font-display text-3xl sm:text-4xl">Ce qu'elles en disent</h2>
+        </div>
+        <div class="mt-12 grid gap-6 md:grid-cols-3">
+          <figure class="rounded-3xl bg-foret-800 p-6">
+            <blockquote class="text-sm leading-7 text-creme-50/90">« J'aime beaucoup le parfum délicat et la texture légère. Je l'utilise tous les soirs, c'est devenu un petit rituel. »</blockquote>
+            <figcaption class="mt-4 font-display text-base text-miel-light">Aïcha</figcaption>
+          </figure>
+          <figure class="rounded-3xl bg-foret-800 p-6">
+            <blockquote class="text-sm leading-7 text-creme-50/90">« Le format est pratique et la bouteille est jolie sur mon étagère. Le toucher est très agréable. »</blockquote>
+            <figcaption class="mt-4 font-display text-base text-miel-light">Fatou</figcaption>
+          </figure>
+          <figure class="rounded-3xl bg-foret-800 p-6">
+            <blockquote class="text-sm leading-7 text-creme-50/90">« Je l'utilise sur mes pointes, mes cheveux sont plus faciles à coiffer le matin. »</blockquote>
+            <figcaption class="mt-4 font-display text-base text-miel-light">Naïma</figcaption>
+          </figure>
+        </div>
+        <p class="mt-6 text-center text-xs text-creme-50/60">Avis partagés à titre d'exemple. Les ressentis varient d'une personne à l'autre.</p>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section id="faq" class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:py-24">
+      <div class="text-center">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-miel-dark">Questions fréquentes</p>
+        <h2 class="mt-3 font-display text-3xl text-foret sm:text-4xl">Vous vous demandez peut-être…</h2>
+      </div>
+      <div class="mt-10 space-y-3">
+        <details class="group rounded-2xl border border-sauge-light bg-creme-50 p-5">
+          <summary class="cursor-pointer list-none font-semibold text-foret marker:hidden">Quels sont les ingrédients ?</summary>
+          <p class="mt-3 text-sm leading-6 text-foret-800/90">Une composition courte à base d'huiles végétales. La liste complète figure sur l'étiquette du flacon.</p>
+        </details>
+        <details class="group rounded-2xl border border-sauge-light bg-creme-50 p-5">
+          <summary class="cursor-pointer list-none font-semibold text-foret">Convient-elle à toutes les peaux ?</summary>
+          <p class="mt-3 text-sm leading-6 text-foret-800/90">Elle est pensée pour la plupart des types de peau. Par précaution, testez quelques gouttes sur une petite zone avant la première utilisation. En cas de doute, demandez conseil à un professionnel de santé.</p>
+        </details>
+        <details class="group rounded-2xl border border-sauge-light bg-creme-50 p-5">
+          <summary class="cursor-pointer list-none font-semibold text-foret">Comment commander ?</summary>
+          <p class="mt-3 text-sm leading-6 text-foret-800/90">Remplissez le formulaire ci-dessous ou cliquez sur un bouton WhatsApp : votre message s'ouvre déjà prérempli, il ne reste qu'à l'envoyer.</p>
+        </details>
+        <details class="group rounded-2xl border border-sauge-light bg-creme-50 p-5">
+          <summary class="cursor-pointer list-none font-semibold text-foret">Quels sont les délais de livraison ?</summary>
+          <p class="mt-3 text-sm leading-6 text-foret-800/90">Contactez-nous sur WhatsApp pour connaître les modalités et les délais selon votre zone.</p>
+        </details>
+        <details class="group rounded-2xl border border-sauge-light bg-creme-50 p-5">
+          <summary class="cursor-pointer list-none font-semibold text-foret">Peut-on l'utiliser sur le visage et les cheveux ?</summary>
+          <p class="mt-3 text-sm leading-6 text-foret-800/90">Oui, Ayana est une huile multi-usages : visage, corps et cheveux, selon vos habitudes.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============ COMMANDER / FORMULAIRE ============ -->
+    <section id="commander" class="bg-creme-50 py-16 lg:py-24">
+      <div class="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-miel-dark">Commander</p>
+          <h2 class="mt-3 font-display text-3xl text-foret sm:text-4xl">Passons à votre rituel Ayana</h2>
+          <p class="mt-4 max-w-md text-base leading-7 text-foret-800/90">
+            Laissez vos coordonnées : le bouton ouvre WhatsApp avec un message déjà rédigé. Vous pourrez le relire et le modifier avant de l'envoyer.
+          </p>
+          <ul class="mt-6 space-y-3 text-sm text-foret-800/90">
+            <li class="flex items-start gap-3"><span class="mt-0.5 text-miel">◆</span> Flacon 100 ml</li>
+            <li class="flex items-start gap-3"><span class="mt-0.5 text-miel">◆</span> Huile naturelle multi-usages</li>
+            <li class="flex items-start gap-3"><span class="mt-0.5 text-miel">◆</span> Réponse sur WhatsApp</li>
+          </ul>
+        </div>
+
+        <form id="form-commande" class="rounded-3xl border border-sauge-light bg-creme p-6 sm:p-8">
+          <h3 class="font-display text-2xl text-foret">Votre commande</h3>
+          <div class="mt-5 grid gap-4">
+            <label class="block text-sm font-semibold text-foret-800">
+              Nom et prénom
+              <input required name="nom" type="text" autocomplete="name" placeholder="Ex. Amina Diallo"
+                     class="mt-2 min-h-[48px] w-full rounded-xl border border-sauge bg-creme-50 px-4 py-3 outline-none transition focus:border-miel" />
+            </label>
+            <label class="block text-sm font-semibold text-foret-800">
+              Téléphone
+              <input required name="telephone" type="tel" autocomplete="tel" placeholder="Ex. +250 78 687 8732"
+                     class="mt-2 min-h-[48px] w-full rounded-xl border border-sauge bg-creme-50 px-4 py-3 outline-none transition focus:border-miel" />
+            </label>
+            <label class="block text-sm font-semibold text-foret-800">
+              Usage souhaité
+              <select name="usage"
+                      class="mt-2 min-h-[48px] w-full rounded-xl border border-sauge bg-creme-50 px-4 py-3 outline-none transition focus:border-miel">
+                <option>Visage</option>
+                <option>Corps</option>
+                <option>Cheveux</option>
+                <option>Multi-usages (visage, corps, cheveux)</option>
+              </select>
+            </label>
+            <label class="block text-sm font-semibold text-foret-800">
+              Message (optionnel)
+              <textarea name="message" rows="3" placeholder="Quantité, ville, question…"
+                        class="mt-2 w-full resize-y rounded-xl border border-sauge bg-creme-50 px-4 py-3 outline-none transition focus:border-miel"></textarea>
+            </label>
+          </div>
+          <button type="submit"
+                  class="mt-6 inline-flex min-h-[48px] w-full items-center justify-center rounded-full bg-foret px-6 text-base font-semibold text-creme-50 transition hover:bg-foret-800">
+            Envoyer ma commande sur WhatsApp
+          </button>
+          <p class="mt-3 text-center text-xs text-foret-800/70">Vous pourrez relire le message avant de l'envoyer.</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- ============ PIED DE PAGE ============ -->
+    <footer class="border-t border-sauge-light/60 bg-creme">
+      <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+        <div class="flex flex-col items-center justify-between gap-6 sm:flex-row">
+          <a href="#accueil" class="flex items-center gap-2">
+            <span class="grid h-9 w-9 place-items-center rounded-full bg-foret text-sm font-semibold text-creme-50">A</span>
+            <span class="font-display text-xl text-foret">Ayana<span class="text-miel">.</span></span>
+          </a>
+          <nav class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-foret-800/80">
+            <a class="hover:text-miel-dark" href="#bienfaits">Bienfaits</a>
+            <a class="hover:text-miel-dark" href="#utilisation">Mode d'emploi</a>
+            <a class="hover:text-miel-dark" href="#faq">Questions</a>
+            <a class="hover:text-miel-dark" href="#commander">Commander</a>
+          </nav>
+        </div>
+        <p class="mt-8 text-center text-xs leading-5 text-foret-800/60">
+          Ayana est un produit cosmétique. Il ne remplace pas un avis médical et les ressentis peuvent varier d'une personne à l'autre.
+          <br />© <span id="annee"></span> Ayana. Tous droits réservés.
+        </p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ============ BOUTON FLOTTANT WHATSAPP ============ -->
+  <a data-wa href="#" target="_blank" rel="noopener" aria-label="Discuter sur WhatsApp"
+     class="fixed bottom-24 right-4 z-50 grid h-14 w-14 place-items-center rounded-full bg-[#25D366] text-white shadow-xl transition hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foret sm:bottom-6 sm:right-6">
+    <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true">
+      <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2Zm0 18.02c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.09 8.09 0 0 1-1.24-4.25c0-4.47 3.64-8.11 8.12-8.11 4.47 0 8.1 3.64 8.1 8.11 0 4.48-3.63 8.11-8.1 8.11Zm4.46-6.07c-.24-.12-1.44-.71-1.66-.79-.22-.08-.38-.12-.55.12-.16.24-.63.79-.77.95-.14.16-.28.18-.52.06-.24-.12-1.03-.38-1.96-1.21-.72-.64-1.21-1.43-1.35-1.67-.14-.24-.01-.37.11-.49.11-.11.24-.28.37-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.55-1.32-.75-1.81-.2-.47-.4-.41-.55-.42h-.47c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.69 2.58 4.1 3.62.57.25 1.02.39 1.37.5.58.18 1.1.16 1.51.1.46-.07 1.44-.59 1.64-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.46-.28Z"/>
+    </svg>
+  </a>
+
+  <!-- ============ BARRE FIXE MOBILE : COMMANDER ============ -->
+  <div class="fixed inset-x-0 bottom-0 z-40 border-t border-sauge-light bg-creme-50/95 px-4 py-3 backdrop-blur sm:hidden">
+    <a data-wa href="#" target="_blank" rel="noopener"
+       class="inline-flex min-h-[48px] w-full items-center justify-center rounded-full bg-foret px-6 text-base font-semibold text-creme-50 transition hover:bg-foret-800">
+      Commander sur WhatsApp
+    </a>
+  </div>
+
+  <script>
+    // ===================================================================
+    //  NUMÉRO WHATSAPP  —  À MODIFIER
+    //  Format international, SANS le "+", SANS espaces et SANS le 0 initial.
+    //  Exemple (Rwanda) : 078 687 8732  ->  "250786878732"
+    // ===================================================================
+    const NUMERO = "250786878732";
+
+    // Message prérempli qui s'affichera dans la discussion WhatsApp.
+    const MESSAGE_DEFAUT = "Bonjour Ayana 👋 Je souhaite commander votre huile naturelle. Pouvez-vous me donner les informations pour la commande ?";
+
+    // Construit un lien WhatsApp (wa.me) avec un message encodé.
+    function lienWhatsApp(message) {
+      return "https://wa.me/" + NUMERO + "?text=" + encodeURIComponent(message || MESSAGE_DEFAUT);
+    }
+
+    // Tous les éléments [data-wa] pointent vers WhatsApp avec le message par défaut.
+    document.querySelectorAll("[data-wa]").forEach(function (el) {
+      el.setAttribute("href", lienWhatsApp(MESSAGE_DEFAUT));
+    });
+
+    // Le formulaire compose un message personnalisé puis ouvre WhatsApp.
+    var form = document.getElementById("form-commande");
+    if (form) {
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        var donnees = new FormData(form);
+        var message =
+          "Bonjour Ayana 👋 Je souhaite commander votre huile naturelle.\n\n" +
+          "• Nom : " + (donnees.get("nom") || "") + "\n" +
+          "• Téléphone : " + (donnees.get("telephone") || "") + "\n" +
+          "• Usage souhaité : " + (donnees.get("usage") || "") +
+          (donnees.get("message") ? "\n• Message : " + donnees.get("message") : "");
+        window.open(lienWhatsApp(message), "_blank", "noopener");
+      });
+    }
+
+    // Année automatique dans le pied de page.
+    var annee = document.getElementById("annee");
+    if (annee) { annee.textContent = new Date().getFullYear(); }
+
+    // Apparition douce des images au défilement (respecte prefers-reduced-motion).
+    var revealEls = document.querySelectorAll(".reveal");
+    var reduit = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduit || !("IntersectionObserver" in window)) {
+      revealEls.forEach(function (el) { el.classList.add("is-visible"); });
+    } else {
+      var observateur = new IntersectionObserver(function (entrees) {
+        entrees.forEach(function (entree) {
+          if (entree.isIntersecting) {
+            entree.target.classList.add("is-visible");
+            observateur.unobserve(entree.target);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: "0px 0px -10% 0px" });
+      revealEls.forEach(function (el) { observateur.observe(el); });
+    }
+  </script>
+</body>
+</html>

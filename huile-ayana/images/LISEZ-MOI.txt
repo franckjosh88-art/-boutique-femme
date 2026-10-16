@@ -1,0 +1,14 @@
+# Dossier des images du site Ayana
+
+Les 5 images présentes sont des photos libres de droits fournies à titre d'exemple
+(source : Pexels, licence gratuite, utilisation commerciale autorisée, sans attribution obligatoire).
+
+Pour personnaliser, remplacez-les en gardant EXACTEMENT ces noms :
+
+- `hero-femme.jpg`   — grande photo de femme (hero, à droite)
+- `flacon.png`       — photo du flacon (format portrait)
+- `femme-visage.jpg` — section Bienfaits : visage
+- `femme-corps.jpg`  — section Bienfaits : corps
+- `femme-cheveux.jpg`— section Bienfaits : cheveux
+
+Si une image est absente, un fond doux s'affiche automatiquement à la place (pas d'image cassée).
