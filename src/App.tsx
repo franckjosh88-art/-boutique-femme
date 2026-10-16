@@ -1,14 +1,20 @@
 import { useState } from 'react'
 import { Link, Route, Routes } from 'react-router-dom'
 
-const produits = [
-  { id: 1, nom: 'Robe fleurie', prix: 25000, tag: 'Nouvelle saison', motif: '01', image: 'https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=900&q=85' },
-  { id: 2, nom: 'Ensemble elegant', prix: 35000, tag: 'Edition limitee', motif: '02', image: 'https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?auto=format&fit=crop&w=900&q=85' },
-  { id: 3, nom: 'Sac a main', prix: 18000, tag: 'Le detail chic', motif: '03', image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=900&q=85' },
-  { id: 4, nom: 'Sandales', prix: 12000, tag: 'Essentiel ete', motif: '04', image: 'https://images.unsplash.com/photo-1485968579580-b6d095142e6e?auto=format&fit=crop&w=900&q=85' },
-]
+import { produits } from './data/produits'
+import type { Product } from './data/produits'
 
-function Header({ overlay = false }: { overlay?: boolean }) {
+type CartItem = Product & { quantity: number }
+
+function Header({
+  overlay = false,
+  cartCount,
+  onOpenCart,
+}: {
+  overlay?: boolean
+  cartCount: number
+  onOpenCart: () => void
+}) {
   return (
     <header className={overlay ? 'absolute inset-x-0 top-0 z-20' : 'border-b border-stone-200/70 bg-[#fffdfa]/85 backdrop-blur-xl'}>
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-5 sm:px-8 sm:py-6">
@@ -19,8 +25,11 @@ function Header({ overlay = false }: { overlay?: boolean }) {
         <nav className={`flex items-center gap-2 text-xs font-medium sm:gap-3 ${overlay ? 'text-white' : 'text-stone-700'}`}>
           <Link to="/" className={`hidden px-3 py-2 transition duration-200 sm:block ${overlay ? 'text-white/80 hover:text-white' : 'hover:text-[#b97756]'}`}>Collection</Link>
           <Link to="/contact" className={`rounded-full border px-4 py-2.5 transition duration-200 ${overlay ? 'border-white/35 bg-white/10 text-white backdrop-blur-md hover:bg-white/20' : 'border-stone-200 bg-white/60 hover:border-[#b97756]'}`}>Contact</Link>
-          <button aria-label="Voir le panier" className={`grid size-10 place-items-center rounded-full text-xs transition duration-200 ${overlay ? 'bg-white text-stone-900 hover:bg-white/85' : 'bg-stone-900 text-white hover:bg-[#b97756]'}`}>
-            <span className="relative">Sac<span className="absolute -right-2 -top-2 grid size-4 place-items-center rounded-full bg-pink-500 text-[9px]">0</span></span>
+          <button aria-label="Voir le panier" onClick={onOpenCart} className={`relative grid size-10 place-items-center rounded-full text-xs transition duration-200 ${overlay ? 'bg-white text-stone-900 hover:bg-white/85' : 'bg-stone-900 text-white hover:bg-[#b97756]'}`}>
+            Sac
+            {cartCount > 0 && (
+              <span className="absolute -right-1 -top-1 grid size-4 place-items-center rounded-full bg-pink-500 text-[9px] text-white">{cartCount}</span>
+            )}
           </button>
         </nav>
       </div>
@@ -28,13 +37,21 @@ function Header({ overlay = false }: { overlay?: boolean }) {
   )
 }
 
-function HomePage() {
+function HomePage({
+  cartCount,
+  onAddToCart,
+  onOpenCart,
+}: {
+  cartCount: number
+  onAddToCart: (product: Product) => void
+  onOpenCart: () => void
+}) {
   return (
     <div className="min-h-screen overflow-hidden bg-[#f7f3ee] text-[#2b211d]">
       <section className="relative flex min-h-[100svh] flex-col overflow-hidden">
         <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=2000&q=90" alt="Femme portant une tenue rose elegante" className="absolute inset-0 size-full object-cover object-[58%_center]" />
         <div className="absolute inset-0 bg-gradient-to-b from-stone-950/40 via-stone-950/15 to-stone-950/60" />
-        <Header overlay />
+        <Header cartCount={cartCount} onOpenCart={onOpenCart} overlay />
         <div className="relative mx-auto flex w-full max-w-7xl flex-1 items-center px-5 pb-28 pt-32 sm:px-8 sm:pt-36">
           <div className="max-w-3xl">
             <p className="text-xs font-medium tracking-[0.22em] text-white/80 uppercase">Collection printemps 2026</p>
@@ -74,7 +91,7 @@ function HomePage() {
                   <img src={p.image} alt={p.nom} loading="lazy" className="size-full object-cover transition duration-700 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-gradient-to-t from-stone-950/25 via-transparent to-white/10" />
                   <span className="absolute left-3 top-3 rounded-full border border-white/40 bg-white/25 px-2.5 py-1 text-[10px] font-medium tracking-wider text-white uppercase backdrop-blur-md">{p.tag}</span>
-                  <button aria-label={`Ajouter ${p.nom} au panier`} className="absolute bottom-3 right-3 grid size-10 translate-y-16 place-items-center rounded-full bg-white text-lg text-stone-900 opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">+</button>
+                  <button aria-label={`Ajouter ${p.nom} au panier`} onClick={() => onAddToCart(p)} className="absolute bottom-3 right-3 grid size-10 place-items-center rounded-full bg-white text-lg text-stone-900 opacity-100 transition duration-300 sm:translate-y-16 sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100">+</button>
                 </div>
                 <div className="mt-4 flex items-start justify-between gap-2">
                   <div><h3 className="font-medium text-stone-900">{p.nom}</h3><p className="mt-1 text-sm text-[#b97756]">{p.prix.toLocaleString()} FCFA</p></div>
@@ -98,7 +115,13 @@ function HomePage() {
   )
 }
 
-function ContactPage() {
+function ContactPage({
+  cartCount,
+  onOpenCart,
+}: {
+  cartCount: number
+  onOpenCart: () => void
+}) {
   const [sent, setSent] = useState(false)
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -109,7 +132,7 @@ function ContactPage() {
 
   return (
     <div className="min-h-screen bg-[#fffafb] text-gray-800">
-      <Header />
+      <Header cartCount={cartCount} onOpenCart={onOpenCart} />
       <main className="mx-auto grid max-w-6xl gap-10 px-6 py-14 lg:grid-cols-[0.85fr_1.15fr] lg:py-20">
         <section className="rounded-3xl bg-pink-600 p-8 text-white shadow-xl shadow-pink-200/70 sm:p-11">
           <p className="text-sm font-bold tracking-[0.2em] uppercase text-pink-100">Nous contacter</p>
@@ -155,10 +178,83 @@ function ContactPage() {
 }
 
 export default function App() {
+  const [cart, setCart] = useState<CartItem[]>([])
+  const [isCartOpen, setIsCartOpen] = useState(false)
+
+  const addToCart = (product: Product) => {
+    setCart((prev) => {
+      const existing = prev.find((item) => item.id === product.id)
+      if (existing) {
+        return prev.map((item) => item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item)
+      }
+      return [...prev, { ...product, quantity: 1 }]
+    })
+    setIsCartOpen(true)
+  }
+
+  const updateQuantity = (id: number, quantity: number) => {
+    if (quantity <= 0) {
+      setCart((prev) => prev.filter((item) => item.id !== id))
+      return
+    }
+    setCart((prev) => prev.map((item) => item.id === id ? { ...item, quantity } : item))
+  }
+
+  const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0)
+  const cartTotal = cart.reduce((sum, item) => sum + item.prix * item.quantity, 0)
+
   return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/contact" element={<ContactPage />} />
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/" element={<HomePage cartCount={cartCount} onAddToCart={addToCart} onOpenCart={() => setIsCartOpen(true)} />} />
+        <Route path="/contact" element={<ContactPage cartCount={cartCount} onOpenCart={() => setIsCartOpen(true)} />} />
+      </Routes>
+
+      {isCartOpen && (
+        <div className="fixed inset-0 z-50 flex justify-end bg-stone-950/45 backdrop-blur-sm">
+          <button aria-label="Fermer le panier" className="flex-1 cursor-default" onClick={() => setIsCartOpen(false)} />
+          <aside className="flex h-full w-full max-w-md flex-col bg-[#fffdfa] shadow-2xl">
+            <div className="flex items-center justify-between border-b border-stone-200 px-6 py-5">
+              <h2 className="text-xl font-semibold text-stone-900">Votre panier</h2>
+              <button className="rounded-full p-2 text-stone-500 transition hover:bg-stone-100" onClick={() => setIsCartOpen(false)}>Fermer</button>
+            </div>
+            <div className="flex-1 overflow-y-auto px-6 py-5">
+              {cart.length === 0 ? (
+                <p className="text-sm text-stone-500">Le panier est vide.</p>
+              ) : (
+                <ul className="space-y-4">
+                  {cart.map((item) => (
+                    <li key={item.id} className="flex gap-4 rounded-2xl border border-stone-200 bg-white p-3">
+                      <img src={item.image} alt={item.nom} className="size-16 rounded-xl object-cover" />
+                      <div className="flex-1">
+                        <p className="font-medium text-stone-900">{item.nom}</p>
+                        <p className="text-sm text-[#b97756]">{item.prix.toLocaleString()} FCFA</p>
+                        <div className="mt-2 flex items-center gap-2">
+                          <button className="grid size-7 place-items-center rounded-full border border-stone-200" onClick={() => updateQuantity(item.id, item.quantity - 1)}>-</button>
+                          <span className="w-6 text-center text-sm">{item.quantity}</span>
+                          <button className="grid size-7 place-items-center rounded-full border border-stone-200" onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
+                        </div>
+                      </div>
+                      <button className="self-start text-sm text-stone-400 transition hover:text-pink-600" onClick={() => updateQuantity(item.id, 0)}>Retirer</button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            <div className="border-t border-stone-200 px-6 py-5">
+              <div className="flex items-center justify-between text-sm font-medium text-stone-700">
+                <span>Total</span>
+                <span>{cartTotal.toLocaleString()} FCFA</span>
+              </div>
+              <button className="mt-4 w-full rounded-xl bg-stone-900 px-5 py-3 font-semibold text-white transition hover:bg-[#b97756]" disabled={cart.length === 0}>
+                Valider la commande
+              </button>
+            </div>
+          </aside>
+        </div>
+      )}
+
+
+    </>
   )
 }
